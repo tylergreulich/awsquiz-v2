@@ -2,12 +2,12 @@ import * as React from 'react';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
 import axios from 'axios';
 
-interface State {
+interface HomeState {
   isAuthenticated: boolean;
 }
 
-export class Home extends React.Component<{}, State> {
-  state: State = { isAuthenticated: false };
+export class Home extends React.Component<{}, HomeState> {
+  state: HomeState = { isAuthenticated: false };
 
   onFailureHandler = (err: any) => {
     console.log('[ERR]', err);

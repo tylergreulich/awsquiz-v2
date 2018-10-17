@@ -1,45 +1,37 @@
-import * as passport from 'passport';
-import * as express from 'express';
+import 'reflect-metadata';
+import 'dotenv/config';
 import { createConnection } from 'typeorm';
 import { ApolloServer } from 'apollo-server-express';
+import * as express from 'express';
+import * as session from 'express-session';
 
-import { GoogleStrategy } from './googleStrategy';
 import { typeDefs } from './typeDefs';
 import { resolvers } from './resolvers';
 
 export const startServer = async () => {
   const server = new ApolloServer({
     typeDefs,
-    resolvers
+    resolvers,
+    context: ({ res, req }: any) => ({ res, req })
   });
 
   await createConnection();
 
   const app = express();
 
-  passport.use(GoogleStrategy);
-
-  app.use(passport.initialize());
-
-  app.get(
-    '/auth/google',
-    passport.authenticate('google', { scope: ['profile'] })
-  );
-
-  app.get(
-    '/auth/google/callback',
-    passport.authenticate('google', { session: false }),
-    (req: express.Request, res: express.Response) => {
-      console.log('Auth good');
-      res.send('Auth was good');
-    }
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET!,
+      resave: false,
+      saveUninitialized: false
+    })
   );
 
   server.applyMiddleware({
     app,
     cors: {
       credentials: true,
-      origin: 'http://localhost:3000'
+      origin: 'http://localhost:4000'
     }
   });
 
