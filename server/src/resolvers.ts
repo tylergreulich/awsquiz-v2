@@ -49,7 +49,7 @@ export const resolvers: IResolvers = {
 
       return user;
     },
-    addScore: async (_, { username, score }) => {
+    updateLeaderboard: async (_, { username, score }) => {
       const user = await User.findOne({ where: { username } });
 
       if (!user) {

@@ -23,6 +23,6 @@ export const typeDefs = gql`
     register(username: String!, password: String!): Boolean!
     login(username: String!, password: String!): User
     logout: Boolean!
-    addScore(username: String!, score: Int!): Leaderboard
+    updateLeaderboard(username: String!, score: Int!): Leaderboard
   }
 `;
